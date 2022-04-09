@@ -1,41 +1,44 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { consumeDonut, initializeApp } from 'web-sdk';
 
 function App() {
-  const [name, setName] = useState('');
-  const [role, setRole] = useState('learner');
-
-  const handleSetName = useCallback((e) => {
-    setName(e.target.value);
-  }, []);
+  const mountTarget = useRef();
 
   useEffect(() => {
+    if (mountTarget && mountTarget.current) {
+      mountTarget.current.innerHTML = '';
+    }
     initializeApp({
       accessKey: 'sample_access_key',
       clientId: '622c74a2a3d36035c13c564f',
       additional: {
         refId: 'fake_ref',
         role: 'learner'
-      }
+      },
+      mountTarget: mountTarget.current
+    });
+    consumeDonut({
+      userId: 'fake_ref',
+      role: 'tutor'
     });
   }, []);
 
-  const onSubmit = useCallback(
-    (e) => {
-      e.preventDefault();
-      consumeDonut({
-        userId: name,
-        role: 'learner'
-      });
-      setName('');
-    },
-    [name]
-  );
+  // const onSubmit = useCallback(
+  //   (e) => {
+  //     e.preventDefault();
+  //     consumeDonut({
+  //       userId: name,
+  //       role: 'learner'
+  //     });
+  //     setName('');
+  //   },
+  //   [name]
+  // );
 
   return (
-    <div className="h-screen px-8 py-12">
-      <h3 className="text-2xl">Welcome to Lamp Demo Site</h3>
-      <form onSubmit={onSubmit}>
+    <div className="h-screen">
+      <div className="h-full w-full" ref={mountTarget} />
+      {/* <form onSubmit={onSubmit}>
         <div className="flex flex-col p-12 shadow-md rounded-md w-96">
           <input
             type="text"
@@ -57,7 +60,7 @@ function App() {
             Get Donut
           </button>
         </div>
-      </form>
+      </form> */}
     </div>
   );
 }
