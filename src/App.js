@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { consumeLamp, initializeClient } from 'web-sdk';
+import Header from './Header';
 
 const platformId = '625ac3ef3f6501b9179644cc';
 const signature =
@@ -57,38 +58,18 @@ function App() {
   // );
 
   return (
-    <div className="h-screen flex">
-      <div className={`w-56 bg-yellow-400 py-12 px-4 ${donutInit ? 'hidden' : ''}`}>
-        <button
-          className="px-6 py-3 cursor-pointer bg-gray-300 hover:bg-gray-50 text-lg"
-          onClick={startDonut}>
-          Start Donut
-        </button>
-      </div>
-      <div className="h-full w-full" ref={mountTarget} />
-      {/* <form onSubmit={onSubmit}>
-        <div className="flex flex-col p-12 shadow-md rounded-md w-96">
-          <input
-            type="text"
-            className="text-lg h-8 px-2 border-2 rounded-md"
-            onChange={handleSetName}
-            placeholder="Your name"
-            value={name}
-          />
-          <br />
-          <select
-            className="h-8 border-2 rounded-md px-2"
-            value={role}
-            onChange={(e) => setRole(e.target.value)}>
-            <option value="learner">Learner</option>
-            <option value="instructor">Instructor</option>
-          </select>
-          <br />
-          <button type="submit" className="bg-zinc-600 px-4 py-1 border-2 rounded-md">
-            Get Donut
+    <div className="h-screen flex flex-col">
+      <Header />
+      <main className="flex flex-1">
+        <div className={`w-56 bg-orange-50 py-12 px-4 ${donutInit ? 'hidden' : ''}`}>
+          <button
+            className="px-6 py-3 cursor-pointer bg-gray-300 hover:bg-gray-50 text-lg"
+            onClick={startDonut}>
+            Start Donut
           </button>
         </div>
-      </form> */}
+        <div className="h-full w-full" ref={mountTarget} />
+      </main>
     </div>
   );
 }
