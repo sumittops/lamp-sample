@@ -8,6 +8,7 @@ const signature =
 
 function App() {
   const mountTarget = useRef();
+  const unmountRef = useRef();
   const lampInitialized = useRef(false);
   const [donutInit, setDonutInit] = useState(false);
 
@@ -27,12 +28,19 @@ function App() {
       });
   }, []);
 
+  const deleteDonut = () => {
+    if (unmountRef.current) {
+      unmountRef.current();
+      setDonutInit(false);
+    }
+  };
+
   const startDonut = () => {
     if (lampInitialized.current) {
       if (mountTarget && mountTarget.current) {
         mountTarget.current.innerHTML = '';
       }
-      consumeLamp({
+      unmountRef.current = consumeLamp({
         type: 'donut',
         metaData: {
           recorded: true
@@ -68,7 +76,20 @@ function App() {
             Start Donut
           </button>
         </div>
-        <div className="h-full w-full" ref={mountTarget} />
+        <div className="h-full w-full flex flex-col">
+          <div className="p-2">
+            <div className={`w-32 ${donutInit ? '' : 'hidden'}`}>
+              <button
+                className="px-6 py-3 cursor-pointer bg-gray-300 hover:bg-gray-50 text-lg"
+                onClick={deleteDonut}>
+                Close
+              </button>
+            </div>
+          </div>
+          <div className="h-full w-full p-2">
+            <div id="mount-donut" className="h-full shadow-2xl rounded-lg" ref={mountTarget} />
+          </div>
+        </div>
       </main>
     </div>
   );
